@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Generate IBAN number for any bank (Pakistan Only) </title>
+
+    <title>Janko At Warp Speed - Enhance your input fields with simple CSS tricks example</title>
+    <style type="text/css">
+  	body
+		{
+			font-family: Arial, Sans-Serif;
+			font-size: 13px;
+		}
+		#inputArea
+		{
+			font-family: Arial, Sans-Serif;
+			font-size: 13px;
+			background-color: #d6e5f4;
+			padding: 10px;
+			width:310px;
+		}
+		#inputArea input, #inputArea textarea
+		{
+			font-family: Arial, Sans-Serif;
+			font-size: 13px;
+			margin-bottom: 5px;
+			display: block;
+			padding: 4px;
+			width: 300px;
+		}
+		
+		.activeField
+		{
+			background-image: none;
+			background-color: #ffffff;
+			border: solid 1px #33677F;
+		}
+		.idle
+		{
+			border: solid 1px #85b1de;
+			background-image: url( 'blue_bg.png' );
+			background-repeat: repeat-x;
+			background-position: top;
+		}
+		
+		#inputArea input[type="submit"]
+		{
+			cursor: pointer;
+			width: 90px;
+		}
+		
+    </style>
+    <script src="jquery-1.2.6.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+			$("input, textarea").addClass("idle");
+				$("input, textarea").focus(function(){
+					$(this).addClass("activeField").removeClass("idle");
+			}).blur(function(){
+					$(this).removeClass("activeField").addClass("idle");
+			});
+	
+				
+			$('#generate_iban').submit(function(){		
+									
+				var postData = $("#generate_iban").serialize();
+				 $.ajax({
+					type: "POST",
+					dataType: "json",
+					data: postData,
+					beforeSend: function(x) {
+	
+						if(x && x.overrideMimeType) {
+							x.overrideMimeType("application/json;charset=UTF-8");
+						}
+						
+	
+					},
+					url: './IBAN_Number.php',
+					success: function(data) {						
+						$('#viewResult').val(data.message.replace(/"/g, ''));
+						
+					}
+			
+				});
+	
+				return false;
+	
+			});			
+
+
+        });
+
+
+    </script>
+
+</head>
+<body>
+
+<!--
+	#######################################################################################################################
+	##	Name = Waseem Riaz.
+	##	Contact = 00923324514134
+	##	Description = This is a simple php script to generate International Bank Account 
+	##	Number (IBAN) for any bank in pakistan.
+	##	This number is needed for online transactions like withdraw money from moneybookers.com and other online payment
+	##	Processors. i contacted my bank and they said they dont know about iban number, so i did a little search and
+	##	Created this simple iban number generation script. hope it helps someone.
+	#######################################################################################################################
+-->
+
+
+    <h2> Generate IBAN number for any bank (Pakistan Only) </h2>
+    <a target="_new" href="https://docs.google.com/viewer?a=v&q=cache:ZNICwq9C0R0J:www.sbp.org.pk/psd/2012/IBAN-Guidelines-CL02-2012.pdf+Allied+bank+IBAN+number&hl=en&gl=pk&pid=bl&srcid=ADGEESi9JevCwURiOgqZ4n8vimMFBL2JkvvpZ2qSJBIOP522XL2Dkn7NqV03VOjI3BXdni3il--FG0Z4LhlY5SzcgJ5Bl9-5SvuQgpLb1lcJdGT6PMKUnchrDB80Y05NIg2keq4jRlzw&sig=AHIEtbTQ02Irgcf9fSl0yXB31PAQNEfPxw
+">
+    	Visit this page to see how this generation works
+    </a>    
+	<br />
+    <br />
+
+    <div id="inputArea">
+		<form action="./" id="generate_iban">
+            <label for="BankAccountNumber">
+                Your Bank Account Number
+            </label>
+            <input id="bank_account_number" name="bank_account_number" type="text" placeholder="Without branch Code" maxlength="16" />
+            <label for="SwiftCode">
+                Bank Swift code
+			</label>
+            <input id="swift_code" name="swift_code" placeholder="First 4 characters separated by ',' like : S,C,B,L" type="text" maxlength="7" />
+            <label for="IBANNumber">
+                IBAN Number
+            </label>
+            <input id="viewResult" placeholder="Hit submit to get IBAN number" type="text" readonly="readonly" />
+			<input type="submit" name="submit" value="submit" />
+		</form>
+	</div>
+    <div class="generating" style="display:none">
+		Generating...
+    </div>
+</body>
+</html>
+
