@@ -225,3 +225,5 @@ try {
 }catch (e) {
 
 }
+
+alert('customjs');
